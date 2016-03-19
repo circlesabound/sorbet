@@ -11,6 +11,7 @@ class Exchange
 		@rawMessageQueue = Queue.new()
 		@messageQueue = Queue.new()
 		@threads = Hash.new()
+		@fulfilledOrders = Hash.new()
 	end
 
 	def self.connect (server)
@@ -40,6 +41,10 @@ class Exchange
 					self.updatePrices(message)
 				elsif message["type"] == "open" or message["type"] == "close"
 					self.openCloseSymbol(message)
+				elsif message["type"] == "fill"
+					self.updateFulfilledOrders(message)
+				elsif message["type"] == "out"
+					# we don't care
 				else
 					@messageQueue << message
 				end
@@ -49,6 +54,46 @@ class Exchange
 
 	def getDetails ()
 		return @prices
+	end
+
+	def getFulFilledOrders ()
+		currentFulfilledOrders = @fulfilledOrders
+		@fulfilledOrders = Hash.new()
+		return currentFulfilledOrders
+	end
+
+	def addOrder (request)
+		@connection.puts request.to_json
+		response = @messageQueue.pop
+		if message["type"] == "ack"
+			if request[:order_id] == response["order_id"]
+				return true
+			else
+				raise "WTF"
+			end
+		elsif message["type"] == "reject"
+			return false
+		elsif message["type"] == "error"
+			raise "Error : #{message["error"]}"
+		end
+	end
+
+	def convertOrder (request)
+		self.addOrder(request)
+	end
+
+	def cancelOrder (request)
+		@connection.puts request.to_json
+		# cancels should not fail
+	end
+
+	def updateFulfilledOrders (message)
+		@fulfilledOrders[message["order_id"]] = {
+			:symbol => message["symbol"],
+			:dir => message["dir"],
+			:price => message["price"],
+			:size => message["size"]
+		}
 	end
 
 	def updatePrices (bookMessage)
