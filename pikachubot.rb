@@ -94,7 +94,7 @@ class PikachuBot
 		end
 		log("orderbook not nil")
 		@order_book.each do |key, val|
-			@percentages[key] = val[1].to_f / val[0]
+			@percentages[key] = val[:sell_price] / val[:buy_price]
 		end
 		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
 		log(temp)
