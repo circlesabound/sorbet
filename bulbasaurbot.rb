@@ -14,7 +14,7 @@ class Bulbasaurbot
 	end
 
 	def run ()
-		while !exchange.open? do
+		while !@exchange.open? do
 			sleep(0.2)
 		end
 
@@ -30,6 +30,7 @@ class Bulbasaurbot
 
 			suggestions.each do |symbol, hash|
 				if hash[:buy]
+					puts "Buy #{hash[:buy_quantity]} of #{symbol}"
 					request = {
 						"order_id": get_order_id(),
 						"symbol": symbol,
@@ -39,12 +40,14 @@ class Bulbasaurbot
 					@exchange.addOrderC(request)
 				end
 				if hash[:sell]
+					puts "Sell #{hash[:sell_quantity]} of #{symbol}"
 					request = {
 						"order_id": get_order_id(),
 						"symbol": symbol,
 						"dir": "SELL",
 						"size": hash[:sell_quantity]
 					}
+					@exchange.addOrderC(request)
 				end
 			end
 
