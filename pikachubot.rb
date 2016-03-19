@@ -68,7 +68,7 @@ class PikachuBot
 		@top_10.each_with_index do |sec, index|
 		#every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
 			order = {type: "add", dir: "BUY", symbol: sec, price: @sell_book[sec]+1,
-					 size: 100/(index + 1), unique_id: @counter}
+					 size: 100/(index + 1), order_id: @counter}
 			log(order)
 			@buyordercounter += 1
 			@agent.addOrder(order) if @buyordercounter < 10
@@ -79,7 +79,7 @@ class PikachuBot
 		@gottensecs = get_fulfilled_buy_orders
 		@gottensecs.each do |id|
 			order = {type: "add", dir: "SELL", symbol: @gottensecs[id][:sec], price: @buy_book[@gottensecs[:sec]]-1,
-				 	size: @gottensecs[id][:size], unique_id: @counter}
+				 	size: @gottensecs[id][:size], order_id: @counter}
 			log(order)
 			@buyordercounter = [0, @buyordercounter - 1].max
 			@counter += 1
