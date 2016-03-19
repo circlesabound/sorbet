@@ -35,7 +35,7 @@ class Exchange
 				"team": "DAMPIER"
 				}.to_json
 			@connection.puts hello
-			if JSON.Parse(@connection.gets)["type"] == "hello"
+			if JSON.parse(@connection.gets)["type"] == "hello"
 				return true
 			end
 		end
