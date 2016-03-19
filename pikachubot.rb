@@ -104,7 +104,7 @@ class PikachuBot
 				log("nil in oder_book")
 				return []
 			end
-			@percentages[key] = val[:sell_price] / val[:buy_price]
+			@percentages[key] = val[:sell_price].to_f / val[:buy_price]
 			log("#{key} percentage: #{@percentages[key]}")
 			log("#{key} : sell #{val[:sell_price]} buy #{val[:buy_price]}")
 		end
