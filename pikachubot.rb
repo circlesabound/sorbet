@@ -20,6 +20,8 @@ class PikachuBot
 	def update_fair_values
 
 		# get the highest buying price for each security
+		log(get_fulfilled_buy_orders)
+		log(get_fulfilled_sell_orders)
 		@buy_book = {}
 		@sell_book = {}
 		@order_book = @agent.getDetails
@@ -88,7 +90,6 @@ class PikachuBot
 	end
 
 	def percentage_difference
-		log("in percentage difference")
 		@order_book = @agent.getDetails
 		@percentages = {}
 		if @order_book.nil?
@@ -98,12 +99,15 @@ class PikachuBot
 		log("orderbook not nil")
 		log(@order_book)
 		@order_book.each do |key, val|
+			log("checking for nil in oder_book")
 			if val[:sell_price].nil? or val[:buy_price].nil?
+				log("nil in oder_book")
 				return []
 			end
 			@percentages[key] = val[:sell_price] / val[:buy_price]
 		end
 		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
+		log("logging temp")
 		log(temp)
 		temp
 	end
