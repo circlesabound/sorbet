@@ -7,10 +7,10 @@ class Exchange
 	def initialize (address, port)
 		@connection = TCPSocket.new("#{address}", port)
 		@open = false
-		@prices = Hash.new()
+		@prices = Hash.new { |hash, key| hash[key] = Hash.new }
 		@rawMessageQueue = Queue.new()
 		@messageQueue = Queue.new()
-		@threads = Queue.new()
+		@threads = Hash.new()
 	end
 
 	def self.connect (server)
