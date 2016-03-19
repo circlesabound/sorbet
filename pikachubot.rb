@@ -23,8 +23,8 @@ class PikachuBot
 		@sell_book = {}
 		@order_book = @agent.getDetails
 		@order_book.each do |sec, stats|
-			@buy_book[sec] = @stats[:buy_price]
-			@sell_book[sec] = @stats[:sell_price]
+			@buy_book[sec] = stats[:buy_price]
+			@sell_book[sec] = stats[:sell_price]
 		end
 
 		if @buy_book.nil? or @sell_book.nil?
