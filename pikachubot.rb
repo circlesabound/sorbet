@@ -85,10 +85,13 @@ class PikachuBot
 	end
 
 	def percentage_difference
+		log("in percentage difference")
 		@order_book = @agent.getDetails
 		if @order_book.nil?
+			log("orderbook nil")
 			return
 		end
+		log("orderbook not nil")
 		@order_book.each do |key, val|
 			@percentages[key] = val[1].to_f / val[0]
 		end
