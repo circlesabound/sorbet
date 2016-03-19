@@ -6,6 +6,7 @@ class PikachuBot
 		#@fair_value = {}
 		@current_value = {}
 		@agent = agent
+		@buyordercounter = 0
 		@counter = 0
 	end
 
