@@ -13,8 +13,8 @@ class PikachuBot
 		lowest_offers = {}
 
 		# get the highest buying price for each security
-		order_book = @agent.get_order_book.buys
-		order_book.each do |buy|
+		@order_book = @agent.get_order_book.buys
+		@order_book.each do |buy|
 			if highest_bids.has_key? buy.name
 				highest_bids[buy.name] = buy.price if highest_bids[buy.name] < buy.price
 			else
@@ -23,8 +23,8 @@ class PikachuBot
 		end
 
 		# get the lowest selling price for each security
-		order_book = @agent.get_order_book.sells
-		order_book.each do |sell|
+		@order_book = @agent.get_order_book.sells
+		@order_book.each do |sell|
 			if lowest_offers.has_key? sell.name
 				lowest_offers[sell.name] = sell.price if lowest_offers[sell.name] > sell.price
 			else
@@ -40,6 +40,17 @@ class PikachuBot
 	end
 
 	def recommended_order
+        @top_10 = percentage_difference
+        @top_10.each do |sec|
+        end
 	end
+
+    def percentage_difference
+		@order_book.each do |key, val|
+            @percentages[key] = val[1].to_f / val[0]
+        end
+        @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
+    end
+
 end
 
