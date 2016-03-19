@@ -86,8 +86,9 @@ class Bulbasaurbot
 
 	def update_prices ()
 		puts "Updating prices"
-		if @old_prices.nil?
+		if @old_prices.nil? or @new_prices.nil?
 			@old_prices = @exchange.getDetails()
+			@new_prices = @exchange.getDetails()
 			return
 		end
 		temp_new = @exchange.getDetails()
