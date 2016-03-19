@@ -3,7 +3,7 @@ require_relative 'lib/Exchange.rb'
 # starter bot
 class PikachuBot
 	def initialize(agent)
-		@fair_value = {}
+		#@fair_value = {}
 		@current_value = {}
 		@agent = agent
 		@counter = 0
