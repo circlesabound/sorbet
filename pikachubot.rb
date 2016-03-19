@@ -40,18 +40,18 @@ class PikachuBot
 	end
 
 	def recommended_order
-        @top_10 = percentage_difference
-        @top_10.each_with_index do |sec, index|
-        #every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
-        end
+		@top_10 = percentage_difference
+		@top_10.each_with_index do |sec, index|
+		#every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
+		end
 	end
 
-    def percentage_difference
+	def percentage_difference
 		@order_book.each do |key, val|
-            @percentages[key] = val[1].to_f / val[0]
-        end
-        @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
-    end
+			@percentages[key] = val[1].to_f / val[0]
+		end
+		@percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
+	end
 
 end
 
