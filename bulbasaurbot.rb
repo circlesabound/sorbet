@@ -66,14 +66,16 @@ class Bulbasaurbot
 			return nil
 		else
 			@old_prices.each do |symbol, p|
-				if @new_prices[symbol][:buy_price] < @old_prices[symbol][:buy_price]
+				#if @new_prices[symbol][:buy_price] < @old_prices[symbol][:buy_price]
+				if @new_prices[symbol][:buy_price] < (@old_prices[symbol][:buy_price] + @old_prices[symbol][:sell_price]) / 2
 					puts "New buy price #{@new_prices[symbol][:buy_price]}, old buy price #{@old_prices[symbol][:buy_price]}"
 					suggestions[symbol][:buy] = true
 					suggestions[symbol][:buy_quantity] = [@new_prices[symbol][:buy_available] - 1, 0].max
 				else
 					suggestions[symbol][:buy] = false
 				end
-				if @new_prices[symbol][:sell_price] > @old_prices[symbol][:sell_price]
+				#if @new_prices[symbol][:sell_price] > @old_prices[symbol][:sell_price]
+				if @new_prices[symbol][:sell_price] > (@old_prices[symbol][:buy_price] + @old_prices[symbol][:sell_price]) / 2
 					puts "New sell price #{@new_prices[symbol][:sell_price]}, old sell price #{@old_prices[symbol][:sell_price]}"
 					suggestions[symbol][:sell] = true
 					suggestions[symbol][:sell_quantity] = [@new_prices[symbol][:sell_available] - 1, 0].max
