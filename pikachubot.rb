@@ -109,7 +109,8 @@ class PikachuBot
 			log("#{key} : sell #{val[:sell_price]} buy #{val[:buy_price]}")
 		end
 		log(@percentages.to_a)
-		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(3)
+		#temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(3)
+		temp = @percentages.sort_by { |a, b| b }.reverse
 		log("logging temp")
 		log(temp)
 		temp
