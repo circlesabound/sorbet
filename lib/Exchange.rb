@@ -78,9 +78,6 @@ class Exchange
 		elsif response["type"] == "reject"
 			return false
 		elsif response["type"] == "error"
-			while response["error"].include? "DUPLICATE_HELLO"
-				response = @messageQueue.pop
-			end
 			raise "Error : #{response["error"]}"
 		end
 	end
