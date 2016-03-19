@@ -46,6 +46,8 @@ class Exchange
 					self.updateFulfilledOrders(message)
 				elsif message["type"] == "out"
 					# we don't care
+				elsif message["type"] == "hello"
+					# WTF
 				else
 					@messageQueue << message
 				end
