@@ -73,7 +73,7 @@ class PikachuBot
 		end
 		@top_10.each_with_index do |sec, index|
 		#every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
-			order = {type: "add", order_id: @counter, symbol: "BOND", dir: "BUY", price: @sell_book[sec]+1,
+			order = {type: "add", order_id: @counter, symbol: sec, dir: "BUY", price: @sell_book[sec]+1,
 					 size: 40/(index + 1)}
 			log(order)
 			@buyordercounter += 1
@@ -117,7 +117,6 @@ class PikachuBot
 		log(@percentages.to_a)
 		#temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(3)
 		temp = @percentages.sort_by { |a, b| b }.reverse
-		temp.delete("XLF")
 		temp = temp.to_a.first(3).map { |x| x[0] }
 		log("logging temp")
 		log(temp)
