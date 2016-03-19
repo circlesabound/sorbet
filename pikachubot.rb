@@ -44,8 +44,10 @@ class PikachuBot
 
 	def get_fulfilled_buy_orders
 		temp = @agent.getFulfilledOrders
+		log("temp #{temp}")
 		new = {}
 		temp.each do |k|
+			log("k#{k}")
 			new[k] = temp[k] if temp[k][:dir] == "BUY"
 		end
 		log("bought amount #{new.size}")
@@ -54,8 +56,10 @@ class PikachuBot
 
 	def get_fulfilled_sell_orders
 		temp = @agent.getFulfilledOrders
+		log("temp #{temp}")
 		new = {}
 		temp.each do |k|
+			log("k#{k}")
 			new[k] = temp[k] if temp[k][:dir] == "SELL"
 		end
 		log("sold amount #{new.size}")
@@ -70,7 +74,7 @@ class PikachuBot
 		@top_10.each_with_index do |sec, index|
 		#every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
 			order = {type: "add", order_id: @counter, symbol: sec, dir: "BUY", price: @sell_book[sec]+1,
-					 size: 50/(index + 1)}
+					 size: 40/(index + 1)}
 			log(order)
 			@buyordercounter += 1
 			@agent.addOrder(order) if @buyordercounter < 10
