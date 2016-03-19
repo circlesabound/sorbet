@@ -69,18 +69,24 @@ class Exchange
 	def addOrder (request)
 		@connection.puts request.to_json
 		response = @messageQueue.pop
-		if response["type"] == "ack"
-			if request[:order_id] == response["order_id"]
-				return true
+		loop do
+			if response["type"] == "ack"
+				if request[:order_id] == response["order_id"]
+					return true
+				else
+					raise "WTF"
+				end
+			elsif response["type"] == "reject"
+				return false
+			elsif response["type"] == "error"
+				if response["error"].includes? "hello"
+					puts "Ignoring hello error"
+				else
+					raise "Error : #{response["error"]}"
+				end
 			else
-				raise "WTF"
+				raise "WTF2"
 			end
-		elsif response["type"] == "reject"
-			return false
-		elsif response["type"] == "error"
-			raise "Error : #{response["error"]}"
-		else
-			raise "WTF2"
 		end
 	end
 
