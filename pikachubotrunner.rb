@@ -1,4 +1,5 @@
-# require_relative 'lib/Exchange.rb'
+require_relative 'lib/Exchange.rb'
+require 'pikachubot.rb'
 
 class PikachuBotRunner
 	def initialize(string)
