@@ -31,7 +31,10 @@ class Bulbasaurbot
 				next
 			end
 
-			seed() if !seeded
+			if !seeded
+				seed()
+				seeded = true
+			end
 
 			puts "what to do ..."
 			suggestions = what_to_do()
@@ -67,10 +70,11 @@ class Bulbasaurbot
 		# sell one bond
 		request = {
 			"order_id": get_order_id(),
-			"symbol": "BOND"
-			"dir": "SELL"
+			"symbol": "BOND",
+			"dir": "SELL",
 			"size": 1
 		}
+		@exchange.addOrderC(request)
 	end
 
 	def what_to_do ()
