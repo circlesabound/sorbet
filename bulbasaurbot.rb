@@ -25,6 +25,9 @@ class Bulbasaurbot
 
 		loop do
 			update_prices()
+			if @new_prices.nil?
+				next
+			end
 
 			suggestions = what_to_do()
 
