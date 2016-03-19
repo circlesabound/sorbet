@@ -41,7 +41,8 @@ class PikachuBot
 
 	def recommended_order
         @top_10 = percentage_difference
-        @top_10.each do |sec|
+        @top_10.each_with_index do |sec, index|
+        #every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
         end
 	end
 
