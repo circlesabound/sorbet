@@ -9,9 +9,11 @@ class PikachuBot
 	end
 
 	def update_fair_values
-		order_book = @agent.get_order_book.buys
 		highest_bids = {}
 		lowest_offers = {}
+
+		# get the highest buying price for each security
+		order_book = @agent.get_order_book.buys
 		order_book.each do |buy|
 			if highest_bids.has_key? buy.name
 				highest_bids[buy.name] = buy.price if highest_bids[buy.name] < buy.price
@@ -19,23 +21,25 @@ class PikachuBot
 				highest_bids[buy.name] = buy.price
 			end
 		end
+
+		# get the lowest selling price for each security
+		order_book = @agent.get_order_book.sells
+		order_book.each do |sell|
+			if lowest_offers.has_key? sell.name
+				lowest_offers[sell.name] = sell.price if lowest_offers[sell.name] > sell.price
+			else
+				lowest_offers[sell.name] = sell.price
+			end
+		end
+
+		# populate fair values with the means
+		common_securities = highest_bids.keys & lowest_offers.keys
+		common_securities.each do |sec|
+			@fair_value[sec] = [highest_bid[sec], lowest_offers[sec]].reduce(:+).to_f / 2
+		end
 	end
 
 	def recommended_order
 	end
 end
 
-connection_type = "development_realistic"
-
-agent = Exchange.connect(connection_type)
-
-while !agent.open?
-	sleep(1)
-end
-
-while agent.open?
-
-	sleep(1)
-end
-
-agent.close()
