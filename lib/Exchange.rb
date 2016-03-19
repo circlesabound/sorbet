@@ -82,6 +82,7 @@ class Exchange
 					raise "WTF"
 				end
 			elsif response["type"] == "reject"
+				raise "Rejected : #{response[""]}"
 				return false
 			elsif response["type"] == "error"
 				if response["error"].includes? "hello"

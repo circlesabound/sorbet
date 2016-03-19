@@ -46,6 +46,7 @@ class Bulbasaurbot
 						"order_id": get_order_id(),
 						"symbol": symbol,
 						"dir": "BUY",
+						"price": @new_prices[symbol][:buy_price],
 						"size": hash[:buy_quantity]
 					}
 					@exchange.addOrderC(request)
@@ -56,6 +57,7 @@ class Bulbasaurbot
 						"order_id": get_order_id(),
 						"symbol": symbol,
 						"dir": "SELL",
+						"price": @new_prices[symbol][:sell_price],
 						"size": hash[:sell_quantity]
 					}
 					@exchange.addOrderC(request)
@@ -68,13 +70,17 @@ class Bulbasaurbot
 
 	def seed ()
 		# sell one bond
+		puts "seeding"
 		request = {
 			"order_id": get_order_id(),
 			"symbol": "BOND",
 			"dir": "SELL",
+			"price": @new_prices["BOND"][:buy_price],
 			"size": 1
 		}
-		@exchange.addOrderC(request)
+		if @exchange.addOrder(request)
+			#
+		end
 	end
 
 	def what_to_do ()
