@@ -20,6 +20,8 @@ class PikachuBot
 	def update_fair_values
 
 		# get the highest buying price for each security
+		log(get_fulfilled_buy_orders)
+		log(get_fulfilled_sell_orders)
 		@buy_book = {}
 		@sell_book = {}
 		@order_book = @agent.getDetails
@@ -67,8 +69,8 @@ class PikachuBot
 		end
 		@top_10.each_with_index do |sec, index|
 		#every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
-			order = {type: "add", dir: "BUY", symbol: sec, price: @sell_book[sec]+1,
-					 size: 100/(index + 1), order_id: @counter}
+			order = {type: "add", order_id: @counter, symbol: sec, dir: "BUY", price: @sell_book[sec]+1,
+					 size: 100/(index + 1)}
 			log(order)
 			@buyordercounter += 1
 			@agent.addOrder(order) if @buyordercounter < 10
@@ -78,8 +80,8 @@ class PikachuBot
 	def recommended_sell_order
 		@gottensecs = get_fulfilled_buy_orders
 		@gottensecs.each do |id|
-			order = {type: "add", dir: "SELL", symbol: @gottensecs[id][:sec], price: @buy_book[@gottensecs[:sec]]-1,
-				 	size: @gottensecs[id][:size], order_id: @counter}
+			order = {type: "add", order_id: @counter, symbol: @gottensecs[id][:sec], dir: "SELL", price: @buy_book[@gottensecs[:sec]]-1,
+				 	size: @gottensecs[id][:size]}
 			log(order)
 			@buyordercounter = [0, @buyordercounter - 1].max
 			@counter += 1
@@ -88,7 +90,6 @@ class PikachuBot
 	end
 
 	def percentage_difference
-		log("in percentage difference")
 		@order_book = @agent.getDetails
 		@percentages = {}
 		if @order_book.nil?
@@ -98,12 +99,21 @@ class PikachuBot
 		log("orderbook not nil")
 		log(@order_book)
 		@order_book.each do |key, val|
+			log("checking for nil in oder_book")
 			if val[:sell_price].nil? or val[:buy_price].nil?
+				log("nil in oder_book")
 				return []
 			end
-			@percentages[key] = val[:sell_price] / val[:buy_price]
+			@percentages[key] = val[:sell_price].to_f / val[:buy_price]
+			log("#{key} percentage: #{@percentages[key]}")
+			log("#{key} : sell #{val[:sell_price]} buy #{val[:buy_price]}")
 		end
-		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
+		log(@percentages.to_a)
+		#temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(3)
+		temp = @percentages.sort_by { |a, b| b }.reverse
+		temp.delete("XLF")
+		temp = temp.to_a.first(3).map { |x| x[0] }
+		log("logging temp")
 		log(temp)
 		temp
 	end
