@@ -66,6 +66,11 @@ class Exchange
 		return currentFulfilledOrders
 	end
 
+	def addOrderC (request)
+		@connection.puts request
+		return true
+	end
+
 	def addOrder (request)
 		@connection.puts request.to_json
 		response = @messageQueue.pop
