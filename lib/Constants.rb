@@ -1,0 +1,1 @@
+DEVELOPMENT_SERVER_ADDRESS = "test-exch-Dampier"
