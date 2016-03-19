@@ -38,8 +38,8 @@ class Caterpiebot
                 r[:type] = "add"
                 r[:dir] = "SELL"
                 r[:symbol] = order[:symbol]
-                r[:price] = symbol[:sell_price]
-                r[:size] = [symbol[:sell_available], order[:size]].min
+                r[:price] = @data[order[:symbol]][:sell_price]
+                r[:size] = [@data[order[:symbol]][:sell_available], order[:size]].min
                 r[:order_id] = @order_id_tracker
                 @order_id_tracker += 1
                 if (@ex.addOrder(r)) then
