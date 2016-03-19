@@ -1,1 +1,2 @@
 DEVELOPMENT_SERVER_ADDRESS = "test-exch-Dampier"
+PRODUCTION_SERVER_ADRESS = "production"
