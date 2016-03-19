@@ -29,6 +29,7 @@ class Bulbasaurbot
 				next
 			end
 
+			puts "what to do ..."
 			suggestions = what_to_do()
 
 			suggestions.each do |symbol, hash|
@@ -84,6 +85,7 @@ class Bulbasaurbot
 	end
 
 	def update_prices ()
+		puts "Updating prices"
 		if @old_prices.nil?
 			@old_prices = @exchange.getDetails()
 			return
