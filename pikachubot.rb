@@ -103,6 +103,8 @@ class PikachuBot
 		log("orderbook not nil")
 		log(@order_book)
 		@order_book.each do |key, val|
+			log("key: #{key}")
+			next if key == "XLF"
 			log("checking for nil in oder_book")
 			if val[:sell_price].nil? or val[:buy_price].nil?
 				log("nil in oder_book")
