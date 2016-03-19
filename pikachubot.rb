@@ -11,9 +11,9 @@ class PikachuBot
 
 
 	def log(output)
-		File.open('s.out', 'w') do |f|
-			f.puts output
-		end
+		#File.open('s.out', 'w') do |f|
+			puts output
+		#end
 	end
 	
 	def update_fair_values
@@ -23,6 +23,11 @@ class PikachuBot
 		@order_book.each do |sec, stats|
 			@buy_book[sec] = @stats[buy_price]
 			@sell_book[sec] = @stats[sell_price]
+		end
+
+		if @buy_book.nil? or @sell_book.nil?
+			log("nilbook")
+			return
 		end
 
 		# populate fair values with the means
@@ -65,7 +70,7 @@ class PikachuBot
 	end
 
 	def recommended_sell_order
-		@gottensecs = @agent.get_fulfilled_sell_orders
+		@gottensecs = get_fulfilled_sell_orders
 		@gottensecs.each do |id|
 			order = {type: "add", dir: "SELL", symbol: @gottensecs[id][:sec], price: @buy_book[@gottensecs[:sec]]-1,
 				 	size: @gottensecs[id][:size], unique_id: @counter}
