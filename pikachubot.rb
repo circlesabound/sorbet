@@ -23,8 +23,8 @@ class PikachuBot
 		@sell_book = {}
 		@order_book = @agent.getDetails
 		@order_book.each do |sec, stats|
-			@buy_book[sec] = @stats[buy_price]
-			@sell_book[sec] = @stats[sell_price]
+			@buy_book[sec] = @stats[:buy_price]
+			@sell_book[sec] = @stats[:sell_price]
 		end
 
 		if @buy_book.nil? or @sell_book.nil?
@@ -33,10 +33,10 @@ class PikachuBot
 		end
 
 		# populate fair values with the means
-		common_securities = @buy_book.keys & @sell_book.keys
-		common_securities.each do |sec|
-			@fair_value[sec] = [@buy_book[sec], @sell_book[sec]].reduce(:+).to_f / 2
-		end
+		#common_securities = @buy_book.keys & @sell_book.keys
+		#common_securities.each do |sec|
+		#	@fair_value[sec] = [@buy_book[sec], @sell_book[sec]].reduce(:+).to_f / 2
+		#end
 	end
 
 	def get_fulfilled_buy_orders
@@ -85,6 +85,10 @@ class PikachuBot
 	end
 
 	def percentage_difference
+		@order_book = @agent.getDetails
+		if @order_book.nil?
+			return
+		end
 		@order_book.each do |key, val|
 			@percentages[key] = val[1].to_f / val[0]
 		end

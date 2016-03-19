@@ -16,7 +16,7 @@ class PikachuBotRunner
 			pikachu.update_fair_values
 			pikachu.recommended_buy_order
 			pikachu.recommended_sell_order
-			sleep(5)
+			sleep(0.1)
 		end
 	end
 end
