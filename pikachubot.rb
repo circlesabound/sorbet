@@ -105,8 +105,10 @@ class PikachuBot
 				return []
 			end
 			@percentages[key] = val[:sell_price] / val[:buy_price]
+			log("#{key} percentage: #{@percentages[key]}")
+			log("#{key} : sell #{val[:sell_price]} buy #{val[:buy_price]}")
 		end
-		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
+		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(3)
 		log("logging temp")
 		log(temp)
 		temp
