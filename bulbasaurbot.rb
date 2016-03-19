@@ -43,6 +43,7 @@ class Bulbasaurbot
 				if hash[:buy]
 					puts "Buy #{hash[:buy_quantity]} of #{symbol}"
 					request = {
+						"type": "add",
 						"order_id": get_order_id(),
 						"symbol": symbol,
 						"dir": "BUY",
@@ -54,6 +55,7 @@ class Bulbasaurbot
 				if hash[:sell]
 					puts "Sell #{hash[:sell_quantity]} of #{symbol}"
 					request = {
+						"type": "add",
 						"order_id": get_order_id(),
 						"symbol": symbol,
 						"dir": "SELL",
@@ -72,15 +74,14 @@ class Bulbasaurbot
 		# sell one bond
 		puts "seeding"
 		request = {
+			"type": "add",
 			"order_id": get_order_id(),
 			"symbol": "BOND",
 			"dir": "SELL",
 			"price": @new_prices["BOND"][:buy_price],
 			"size": 1
 		}
-		if @exchange.addOrder(request)
-			#
-		end
+		@exchange.addOrderC(request)
 	end
 
 	def what_to_do ()
