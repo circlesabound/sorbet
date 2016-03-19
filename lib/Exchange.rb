@@ -79,6 +79,8 @@ class Exchange
 			return false
 		elsif response["type"] == "error"
 			raise "Error : #{response["error"]}"
+		else
+			raise "WTF2"
 		end
 	end
 
