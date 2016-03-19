@@ -26,17 +26,18 @@ class Exchange
 	end
 
 	def open? ()
-		if self.open
+		if @open
 			return true
 		else
 			puts "sending hello"
-			hello = JSON.parse('{
+			hello = {
 				"type": "hello",
-				"team": "Dampier"
-				}')
+				"team": "DAMPIER"
+				}.to_json
 			@connection.puts hello
-			puts @connection.gets
-			return false
+			if JSON.Parse(@connection.gets)["type"] == "hello"
+				return true
+			end
 		end
 	end
 
