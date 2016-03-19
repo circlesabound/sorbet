@@ -19,6 +19,8 @@ class PikachuBot
 	def update_fair_values
 
 		# get the highest buying price for each security
+		@buy_book = {}
+		@sell_book = {}
 		@order_book = @agent.getDetails
 		@order_book.each do |sec, stats|
 			@buy_book[sec] = @stats[buy_price]
