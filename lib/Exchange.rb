@@ -33,6 +33,7 @@ class Exchange
 		@threads[:MessageGetter] = Thread.new do
 			while message = @connection.gets
 				@rawMessageQueue << JSON.parse(message)
+				sleep(0.1)
 			end
 		end
 		@threads[:MessageReader] = Thread.new do
@@ -48,6 +49,7 @@ class Exchange
 				else
 					@messageQueue << message
 				end
+				sleep(0.1)
 			end
 		end
 	end
@@ -56,7 +58,7 @@ class Exchange
 		return @prices
 	end
 
-	def getFulFilledOrders ()
+	def getFulfilledOrders ()
 		currentFulfilledOrders = @fulfilledOrders
 		@fulfilledOrders = Hash.new()
 		return currentFulfilledOrders
@@ -65,16 +67,16 @@ class Exchange
 	def addOrder (request)
 		@connection.puts request.to_json
 		response = @messageQueue.pop
-		if message["type"] == "ack"
+		if response["type"] == "ack"
 			if request[:order_id] == response["order_id"]
 				return true
 			else
 				raise "WTF"
 			end
-		elsif message["type"] == "reject"
+		elsif response["type"] == "reject"
 			return false
-		elsif message["type"] == "error"
-			raise "Error : #{message["error"]}"
+		elsif response["type"] == "error"
+			raise "Error : #{response["error"]}"
 		end
 	end
 
@@ -97,11 +99,14 @@ class Exchange
 	end
 
 	def updatePrices (bookMessage)
+		if bookMessage["type"] == "trade"
+			return
+		end
 		symbol = bookMessage["symbol"]
-		@prices[symbol][:buy_price] = bookMessage["buy"][0][0]
-		@prices[symbol][:buy_available] = bookMessage["buy"][0][1]
-		@prices[symbol][:sell_price] = bookMessage["sell"][0][0]
-		@prices[symbol][:sell_available] = bookMessage["sell"][0][1]
+		@prices[symbol][:buy_price] = bookMessage["buy"][0][0] unless bookMessage["buy"].length == 0
+		@prices[symbol][:buy_available] = bookMessage["buy"][0][1] unless bookMessage["buy"].length == 0
+		@prices[symbol][:sell_price] = bookMessage["sell"][0][0] unless bookMessage["sell"].length == 0
+		@prices[symbol][:sell_available] = bookMessage["sell"][0][1] unless bookMessage["sell"].length == 0
 	end
 
 	def openCloseSymbol (bookMessage)
@@ -118,7 +123,6 @@ class Exchange
 		if @open
 			return true
 		else
-			puts "sending hello"
 			hello = {
 				"type": "hello",
 				"team": "DAMPIER"

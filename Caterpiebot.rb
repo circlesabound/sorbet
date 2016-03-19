@@ -16,17 +16,13 @@ class Caterpiebot
                 sleep(0.2)
             end
 
-            #Initialise
-            while @ex.open? do
+            loop do
                 @data = @ex.getDetails()
                 @fulfilled_orders = @ex.getFulfilledOrders()
                 sell_existing_orders()
                 buy_new_orders()
-                sleep(10)
+                sleep(0.2)
             end
-
-            @ex.close()
-            sleep(10)
         end
     end
 
@@ -44,7 +40,8 @@ class Caterpiebot
                 r[:symbol] = order[:symbol]
                 r[:price] = symbol[:sell_price]
                 r[:size] = [symbol[:sell_available], order[:size]].min
-                r[:order_id] = @order_id_tracker++
+                r[:order_id] = @order_id_tracker
+                @order_id_tracker += 1
                 if (@ex.addOrder(r)) then
 
                 end
@@ -61,7 +58,8 @@ class Caterpiebot
                 r[:symbol] = symbol_name
                 r[:size] = symbol[:buy_available]
                 r[:price] = symbol[:buy_price]
-                r[:order_id] = @order_id_tracker++
+                r[:order_id] = @order_id_tracker
+                @order_id_tracker += 1
                 if (@ex.addOrder(r)) then
 
                 end
