@@ -22,7 +22,7 @@ class Exchange
 		elsif server == "development_sandbox"
 			exchange = Exchange.new(DEVELOPMENT_SERVER_ADDRESS, 25002)
 		elsif server == "production"
-			raise NotImplementedError, "sorry"
+			exchange = Exchange.new(PRODUCTION_SERVER_ADRESS, 25000)
 		else
 			raise ArgumentError, "Argument 'server' must be either 'development_realistic', 'development_slow', 'development_sandbox', or 'production'"
 		end
