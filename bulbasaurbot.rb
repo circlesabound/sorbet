@@ -87,6 +87,7 @@ class Bulbasaurbot
 	def update_prices ()
 		puts "Updating prices"
 		if @old_prices.nil? or @new_prices.nil?
+			puts "full update"
 			@old_prices = @exchange.getDetails()
 			@new_prices = @exchange.getDetails()
 			return
@@ -109,7 +110,10 @@ class Bulbasaurbot
 		end
 		if !equal
 			@old_prices = @new_prices
-			@new_prices = temp_new
+			temp_new.each do |symbol, p|
+				@new_prices[symbol][:buy_price] = temp_new[symbol][:buy_price]
+				@new_prices[symbol][:sell_price] = temp_new[symbol][:sell_price]
+			end
 		end
 	end
 end
