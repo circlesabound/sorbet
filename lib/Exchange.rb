@@ -54,9 +54,9 @@ class Exchange
 	def updatePrices (bookMessage)
 		symbol = bookMessage["symbol"]
 		@prices[symbol][:buy_price] = bookMessage["buy"][0][0]
-		@prices[symbol][:buy_quantity] = bookMessage["buy"][0][1]
+		@prices[symbol][:buy_available] = bookMessage["buy"][0][1]
 		@prices[symbol][:sell_price] = bookMessage["sell"][0][0]
-		@prices[symbol][:sell_quantity] = bookMessage["sell"][0][1]
+		@prices[symbol][:sell_available] = bookMessage["sell"][0][1]
 	end
 
 	def openCloseSymbol (bookMessage)
