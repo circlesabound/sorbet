@@ -111,6 +111,7 @@ class PikachuBot
 		log(@percentages.to_a)
 		#temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(3)
 		temp = @percentages.sort_by { |a, b| b }.reverse
+		temp.delete(:XLF)
 		temp = temp.to_a.first(3).map { |x| x[0] }
 		log("logging temp")
 		log(temp)
