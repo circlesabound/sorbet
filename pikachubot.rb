@@ -61,6 +61,9 @@ class PikachuBot
 
 	def recommended_buy_order
 		@top_10 = percentage_difference
+		if @top_10.empty?
+			return
+		end
 		@top_10.each_with_index do |sec, index|
 		#every sec return 'buy, sec, (sell price - 1), 100/(index+1)'
 			order = {type: "add", dir: "BUY", symbol: sec, price: @sell_book[sec]+1,
@@ -81,7 +84,6 @@ class PikachuBot
 			@counter += 1
 			@agent.addOrder(order)
 		end
-		
 	end
 
 	def percentage_difference
@@ -90,11 +92,14 @@ class PikachuBot
 		@percentages = {}
 		if @order_book.nil?
 			log("orderbook nil")
-			return
+			return []
 		end
 		log("orderbook not nil")
 		log(@order_book)
 		@order_book.each do |key, val|
+			if val[:sell_price].nil? or val[:buy_price].nil?
+				return []
+			end
 			@percentages[key] = val[:sell_price] / val[:buy_price]
 		end
 		temp = @percentages.to_a.sort_by { |a, b| b[1] <=> a[1] }.map { |x| x.first }.first(10)
