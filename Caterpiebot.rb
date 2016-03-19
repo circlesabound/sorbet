@@ -1,30 +1,36 @@
 require_relative "lib/Exchange.rb"
 require_relative "lib/Request.rb"
 
-$setting = "development_realistic"
-$ex = Exchange.connect(setting)
+loop do
 
-#Wait until exchange is open
-while !$ex.open? do
-    sleep(0.1)
+    $setting = "development_realistic"
+    $ex = Exchange.connect(setting)
+
+    #Wait until exchange is open
+    while !$ex.open? do
+        sleep(0.1)
+    end
+
+    #Initialise fair value
+    $fair_value = Hash.new
+    #Initialise current orders
+    $current_orders = Hash.new
+
+    #Initialise
+    while $ex.open? do
+        $data = ex.getDetails()
+        determine_fair_value()
+        sell_existing_orders()
+        buy_new_orders()
+
+        sleep(40)
+    end
+
+    $ex.close()
+    
+    sleep(10)
 end
 
-#Initialise fair value
-$fair_value = Hash.new
-#Initialise current orders
-$current_orders = Hash.new
-
-#Initialise
-while $ex.open? do
-    $data = ex.getDetails
-    determine_fair_value()
-    sell_existing_orders()
-    buy_new_orders()
-
-    sleep(40)
-end
-
-$ex.close()
 
 def determine_fair_value
     $data.each do |key, item|
