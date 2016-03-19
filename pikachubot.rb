@@ -93,6 +93,7 @@ class PikachuBot
 			return
 		end
 		log("orderbook not nil")
+		log(@order_book)
 		@order_book.each do |key, val|
 			@percentages[key] = val[:sell_price] / val[:buy_price]
 		end
