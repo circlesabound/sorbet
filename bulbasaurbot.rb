@@ -23,11 +23,15 @@ class Bulbasaurbot
 		update_prices()
 		sleep(2)
 
+		seeded = false
+
 		loop do
 			update_prices()
 			if @new_prices.nil?
 				next
 			end
+
+			seed() if !seeded
 
 			puts "what to do ..."
 			suggestions = what_to_do()
@@ -59,6 +63,16 @@ class Bulbasaurbot
 		end
 	end
 
+	def seed ()
+		# sell one bond
+		request = {
+			"order_id": get_order_id(),
+			"symbol": "BOND"
+			"dir": "SELL"
+			"size": 1
+		}
+	end
+
 	def what_to_do ()
 		suggestions = Hash.new()
 		if @old_prices.nil? or @new_prices.nil?
@@ -66,16 +80,14 @@ class Bulbasaurbot
 			return nil
 		else
 			@old_prices.each do |symbol, p|
-				#if @new_prices[symbol][:buy_price] < @old_prices[symbol][:buy_price]
-				if @new_prices[symbol][:buy_price] < (@old_prices[symbol][:buy_price] + @old_prices[symbol][:sell_price]) / 2
+				if @new_prices[symbol][:buy_price] < @old_prices[symbol][:buy_price]
 					puts "New buy price #{@new_prices[symbol][:buy_price]}, old buy price #{@old_prices[symbol][:buy_price]}"
 					suggestions[symbol][:buy] = true
 					suggestions[symbol][:buy_quantity] = [@new_prices[symbol][:buy_available] - 1, 0].max
 				else
 					suggestions[symbol][:buy] = false
 				end
-				#if @new_prices[symbol][:sell_price] > @old_prices[symbol][:sell_price]
-				if @new_prices[symbol][:sell_price] > (@old_prices[symbol][:buy_price] + @old_prices[symbol][:sell_price]) / 2
+				if @new_prices[symbol][:sell_price] > @old_prices[symbol][:sell_price]
 					puts "New sell price #{@new_prices[symbol][:sell_price]}, old sell price #{@old_prices[symbol][:sell_price]}"
 					suggestions[symbol][:sell] = true
 					suggestions[symbol][:sell_quantity] = [@new_prices[symbol][:sell_available] - 1, 0].max
