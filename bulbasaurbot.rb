@@ -81,6 +81,10 @@ class Bulbasaurbot
 	end
 
 	def update_prices ()
+		if @old_prices.nil?
+			@old_prices = @exchange.getDetails()
+			return
+		end
 		temp_new = @exchange.getDetails()
 		equal = true
 		temp_new.each do |symbol, p|
