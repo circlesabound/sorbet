@@ -12,6 +12,6 @@ Sorbet is a set of three trading bots built for medium-frequency trading in a vi
 
 Contributors to this project are:
 - https://github.com/circlesabound
-- https://github.com/Synclicity
+- https://github.com/thlix
 - https://github.com/cbxsn
 - https://github.com/Nydrani
